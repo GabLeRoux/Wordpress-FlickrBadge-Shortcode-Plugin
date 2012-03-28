@@ -58,14 +58,17 @@ class FlickrBadgeShortcode
 	function FlickrBadgeShortcode_add_defaults() 
 	{
 		$tmp = get_option( 'FlickrBadgeShortcode_options_group');
-	    if( ($tmp['chk_restore_default_on_install']=='1') || (!is_array( $tmp )) )
+	    if( ($tmp['flickrbadge_chk_restore_default_on_install']=='0') || (!is_array( $tmp )) )
 	    {
 			delete_option('FlickrBadgeShortcode_options_group');
 			$arr = array(
-				"flickrbadge_id" => "48389960@N05",
-				"flickrbadge_layout" => "x",
-				"flickrbadge_size" => "m",
-				"chk_restore_default_on_install" => 0
+				'flickrbadge_id' => '48389960@N05',
+				'flickrbadge_count' => '10',
+				'flickrbadge_display' => 'random',
+				'flickrbadge_source' => 'user',
+				'flickrbadge_layout' => 'x',
+				'flickrbadge_size' => 'm',
+				'flickrbadge_chk_restore_default_on_install' => '1'
 				);
 			update_option( 'FlickrBadgeShortcode_options_group', $arr);
 		}
@@ -78,7 +81,7 @@ class FlickrBadgeShortcode
 		register_setting('FlickrBadgeShortcode_options_group', 'flickrbadge_id', array($this, 'FlickrBadgeShortcode_validate_options'));
 		register_setting('FlickrBadgeShortcode_options_group', 'flickrbadge_size', array($this, 'FlickrBadgeShortcode_validate_options'));
 		register_setting('FlickrBadgeShortcode_options_group', 'flickrbadge_layout', array($this, 'FlickrBadgeShortcode_validate_options'));
-		register_setting('FlickrBadgeShortcode_options_group', 'chk_restore_default_on_install', array($this, 'FlickrBadgeShortcode_validate_options'));
+		register_setting('FlickrBadgeShortcode_options_group', 'flickrbadge_chk_restore_default_on_install', array($this, 'FlickrBadgeShortcode_validate_options'));
 	}
 	
 	// Delete options when uninstalling plugin
@@ -143,7 +146,7 @@ class FlickrBadgeShortcode
 					<tr valign="top" style="border-top:#dddddd 1px solid;">
 						<th scope="row"><?php _e('Database options', 'flickrbadge') ?></th>
 						<td>
-							<label><input name="flickrbadge_options[chk_restore_default_on_install]" type="checkbox" value="1" <?php if (isset($options['chk_restore_default_on_install'])) { checked('1', $options['chk_restore_default_on_install']); } ?> /> <?php _e('Restore defaults upon plugin deactivation/reactivation', 'flickrbadge') ?></label>
+							<label><input name="flickrbadge_options[flickrbadge_chk_restore_default_on_install]" type="checkbox" value="1" <?php if (isset($options['flickrbadge_chk_restore_default_on_install'])) { checked('1', $options['flickrbadge_chk_restore_default_on_install']); } ?> /> <?php _e('Restore defaults upon plugin deactivation/reactivation', 'flickrbadge') ?></label>
 							<br /><span class="description"><?php _e('Only check this if you want to reset plugin settings upon Plugin reactivation', 'flickrbadge') ?></span>
 						</td>
 					</tr>
@@ -177,10 +180,10 @@ class FlickrBadgeShortcode
 
 		// Defaults attributes
 		$query_atts = shortcode_atts(array(
-			'count' => '10',
-			'display' => 'random',
-			'source' => 'user',
-			'size' => $options['flickrbadge_m'],
+			'count' => $options['flickrbadge_count'],
+			'display' => $options['flickrbadge_display'],
+			'source' => $options['flickrbadge_source'],
+			'size' => $options['flickrbadge_size'],
 			'layout' => $options['flickrbadge_layout'],
 			'user' => $options['flickrbadge_id'],
 			'api_key' => ''
