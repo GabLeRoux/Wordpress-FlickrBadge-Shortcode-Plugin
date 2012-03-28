@@ -36,38 +36,38 @@ class FlickrBadgeShortcode
 		load_plugin_textdomain( 'flickrbadge', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 		// Load defaults on plugin activation
-		register_activation_hook(__FILE__, array($this, 'FlickrBadgeShortcode_add_defaults'));
+		register_activation_hook( __FILE__, array($this, 'FlickrBadgeShortcode_add_defaults'));
 		
 		// When uninstalling plugin
-		register_uninstall_hook(__FILE__, array($this, 'FlickrBadgeShortcode_delete_plugin_options'));
+		register_uninstall_hook( __FILE__, array($this, 'FlickrBadgeShortcode_delete_plugin_options'));
 		
 		// Register Settings
-		add_action('admin_init', array($this, 'FlickrBadgeShortcode_register_settings'));
+		add_action( 'admin_init', array($this, 'FlickrBadgeShortcode_register_settings'));
 		
 		// Create Settings Page
-		add_action('admin_menu', array($this, 'FlickrBadgeShortcode_add_options_page'));
+		add_action( 'admin_menu', array($this, 'FlickrBadgeShortcode_add_options_page'));
 
 		// Adds link to configs before plugin desactivation link (still messed up) :/
 		add_filter( 'plugin_action_links', array($this, 'FlickrBadgeShortcode_plugin_action_links'), 10, 2 );
 
 		// Create shortcode
-        add_shortcode('flickrbadge', array($this, 'FlickrBadgeShortcode_output_script'));
+        add_shortcode( 'flickrbadge', array($this, 'FlickrBadgeShortcode_output_script'));
 	}
 
 	// Define default option settings
 	function FlickrBadgeShortcode_add_defaults() 
 	{
-		$tmp = get_option('FlickrBadgeShortcode_options');
-	    if(($tmp['chk_restore_default_on_install']=='1')||(!is_array($tmp)))
+		$tmp = get_option( 'FlickrBadgeShortcode_options_group');
+	    if( ($tmp['chk_restore_default_on_install']=='1') || (!is_array( $tmp )) )
 	    {
-			delete_option('FlickrBadgeShortcode_options');
+			delete_option('FlickrBadgeShortcode_options_group');
 			$arr = array(
 				"flickrbadge_id" => "48389960@N05",
 				"flickrbadge_layout" => "x",
 				"flickrbadge_size" => "m",
 				"chk_restore_default_on_install" => 0
 				);
-			update_option('FlickrBadgeShortcode_options', $arr);
+			update_option( 'FlickrBadgeShortcode_options_group', $arr);
 		}
 	}
 
@@ -75,13 +75,16 @@ class FlickrBadgeShortcode
 	function FlickrBadgeShortcode_register_settings()
 	{
 		// Register our settings
-		register_setting('FlickrBadgeShortcode_options_group', 'FlickrBadgeShortcode_options', array($this, 'FlickrBadgeShortcode_validate_options'));
+		register_setting('FlickrBadgeShortcode_options_group', 'flickrbadge_id', array($this, 'FlickrBadgeShortcode_validate_options'));
+		register_setting('FlickrBadgeShortcode_options_group', 'flickrbadge_size', array($this, 'FlickrBadgeShortcode_validate_options'));
+		register_setting('FlickrBadgeShortcode_options_group', 'flickrbadge_layout', array($this, 'FlickrBadgeShortcode_validate_options'));
+		register_setting('FlickrBadgeShortcode_options_group', 'chk_restore_default_on_install', array($this, 'FlickrBadgeShortcode_validate_options'));
 	}
 	
 	// Delete options when uninstalling plugin
 	function FlickrBadgeShortcode_delete_plugin_options()
 	{
-		delete_option('FlickrBadgeShortcode_options');
+		delete_option('FlickrBadgeShortcode_options_group');
 	}
 
 	// Add menu page
@@ -104,7 +107,8 @@ class FlickrBadgeShortcode
 				<!-- Options Form -->
 			<form method="post" action="options.php">
 				<?php settings_fields('FlickrBadgeShortcode_options_group'); ?>
-				<?php $options = get_option('FlickrBadgeShortcode_options'); ?>
+				<?php $options = get_option('FlickrBadgeShortcode_options_group'); ?>
+
 				<table class="form-table">
 					<tr>
 						<th scope="row"><?php _e('Default Flickr ID for shortcodes', 'flickrbadge') ?><br /><span class="description"><?php _e('To get your Flickr ID, simply use', 'flickrbadge') ?> <a href="http://idgettr.com/" target="_blank()">idGettr</a>.</span></th>
@@ -160,7 +164,7 @@ class FlickrBadgeShortcode
 	}
 
 	// Sanitize and validate input. Accepts an array, return a sanitized array.
-	function FlickrBadgeShortcode_validate_options($input) 
+	function FlickrBadgeShortcode_validate_options( $input ) 
 	{
 		 // strip html from textboxes
 		$input['flickrbadge_id'] =  wp_filter_nohtml_kses($input['flickrbadge_id']); // Sanitize textbox input (strip html tags, and escape characters)
@@ -169,7 +173,7 @@ class FlickrBadgeShortcode
 	
 	function FlickrBadgeShortcode_output_script($atts, $content = null)
 	{
-		$options = get_option('FlickrBadgeShortcode_options');
+		$options = get_option('FlickrBadgeShortcode_options_group');
 
 		// Defaults attributes
 		$query_atts = shortcode_atts(array(
@@ -187,10 +191,10 @@ class FlickrBadgeShortcode
 	}
 
 		// Display a Settings link on the main Plugins page
-	function FlickrBadgeShortcode_plugin_action_links( $links, $file )
+	function FlickrBadgeShortcode_plugin_action_links($links, $file)
 	{
 
-		if ( $file == plugin_basename( __FILE__ ) ) 
+		if ( $file == plugin_basename(__FILE__) ) 
 		{
 			$FlickrBadgeShortcode_links = '<a href="'.get_admin_url().'options-general.php?page=flickrbadge_shortcode">'.__('Settings').'</a>';
 			// make the 'Settings' link appear first
