@@ -12,4 +12,4 @@ license
 TODO
 	Fix configs :)
 
-> Copyright (c) 2009-2011 Gabriel Le Breton
+> Copyright (c) 2012 Gabriel Le Breton
