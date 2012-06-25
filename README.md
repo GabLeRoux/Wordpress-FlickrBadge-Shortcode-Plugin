@@ -51,4 +51,5 @@ TODO
 
 license
 -------
-> Copyright (c) 2012 Gabriel Le Breton
+Use it the way you want
+> 2012 Gabriel Le Breton
