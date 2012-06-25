@@ -1,7 +1,7 @@
 Wordpress FlickrBadge Shortcode Plugin
 ======================================
 
-This plugin will let you add a flickrbadge into a post or a page, or even in a theme
+This plugin will let you add a flickrbadge (List of Flickr pictures) into a post or a page, or even in a theme
 
 Usage
 -----
@@ -47,7 +47,7 @@ TODO
 ----
 - Fix Wordpress config page
 - Find a way to display more than 10 pictures
-
+- Enable lightbox or someting like that to display pictures in a cool way on click
 
 license
 -------
