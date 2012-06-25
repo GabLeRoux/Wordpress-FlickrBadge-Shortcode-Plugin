@@ -41,7 +41,7 @@ Example
 ```php
 [flickrbadge count="6" layout="h" display="latest" size="m" source="all_tag" tag="cat"]
 ```
-Will display 6 latest cat medium sized pictures horizontally
+Will display 6 latest cat medium sized pictures horizontally, meow! :P
 
 TODO
 ----
